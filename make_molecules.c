@@ -12,6 +12,7 @@
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 
 /* Random # below threshold indicates H; otherwise C. */
@@ -54,9 +55,15 @@ void init()
     int init_c_mutex = sem_init(&c_mutex, 0, 1);
     int init_h_mutex = sem_init(&h_mutex, 0, 1);
     
+    fprintf(stdout, "C: %d\n", init_c);
+    fprintf(stdout, "C: %d\n", init_h);
+    fprintf(stdout, "C: %d\n", init_c_mutex);
+    fprintf(stdout, "C: %d\n", init_h_mutex);
+
+    
     /*check for nulls */
     if(init_c != 0 || init_h != 0 || init_c_mutex != 0 || init_h_mutex != 0){
-        fprintf(stdout, "Exiting - failed to initialize the semaphores.\n");
+        fprintf(stdout, "Exiting - failed to initialize the semaphores.  Error: %d\n", errno);
         exit(1);
     }
     
