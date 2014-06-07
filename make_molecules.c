@@ -123,6 +123,9 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 	}
+    
+    fprintf(stdout, "Carbon atoms: %d.\n", cNum);
+    fprintf(stdout, "Hydrogen atoms: %d.\n", hNum);
 
 	/*
 	 * Now the tricky bit begins....  All the atoms are allowed
