@@ -19,16 +19,47 @@
 #define DEFAULT_NUM_ATOMS 50
 #define TRUE   1
 #define FALSE  0
+#define BUFFER_SIZE 3
+#define CARBON_SIZE 2
+#define HYDROGEN_SIZE 1
+#define CARBON 1
+#define HYDROGEN 0
 
 
 /* Global / shared variables */
 int  cNum = 0, hNum = 0;
 long numAtoms;
+sem_t c_sem, h_sem;
+sem_t c_mutex, h_mutex;
+
+
+/* Add buffer - array of pthreads, size 3 */
+pthread_t *buffer [BUFFER_SIZE];
 
 
 /* Whatever needs doing for your global data structures, do them here. */
 void init()
 {
+    /* init buffer to all null */
+    int i;
+    for(i=0; i<BUFFER_SIZE; i++){
+        if(!buffer[i]){
+            fprintf(stdout, "Buffer %d is null.\n", i);
+        }
+    }
+    
+    /*init semaphores*/
+    int init_c = sem_init(&c_sem, 0, CARBON_SIZE);
+    int init_h = sem_init(&h_sem, 0, HYDROGEN_SIZE);
+    int init_c_mutex = sem_init(&c_mutex, 0, 1);
+    int init_h_mutex = sem_init(&h_mutex, 0, 1);
+    
+    /*check for nulls */
+    if(init_c != 0 || init_h != 0 || init_c_mutex != 0 || init_h_mutex != 0){
+        fprintf(stdout, "Exiting - failed to initialize the semaphores.\n");
+        exit(1);
+    }
+    
 }
 
 
@@ -60,6 +91,9 @@ void *hReady( void *arg )
 	printf("h%d is alive\n", id);
 
     /* Other things happen past this point... */
+    
+    
+    
 }
 
 
